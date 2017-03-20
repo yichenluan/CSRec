@@ -42,8 +42,8 @@ def sim_pearson(prefs, R_dict, p1, p2):
 
     pSum = sum([prefs[p1][it] * prefs[p2][it] for it in si])
 
-    num = pSum - (sum1 * sum2 / n)
-    den = sqrt((sum1Sq - pow(sum1, 2) / n) * (sum2Sq - pow(sum2, 2) / n))
+    num = abs(pSum - (sum1 * sum2 / n))
+    den = sqrt(abs(sum1Sq - pow(sum1, 2) / n) * abs(sum2Sq - pow(sum2, 2) / n))
 
     if den == 0:
         return 0
@@ -60,7 +60,7 @@ def social_regular(R, R_dict, T, P, k, i):
     res = 0.0
     for friend in i_trust:
         sim_friend = sim_pearson(R, R_dict, i, friend)
-        diff_friend = P[i][k] - P[friend][k]
+        diff_friend = abs(P[i][k] - P[friend][k])
         res += sim_friend * diff_friend
 
     return res
@@ -78,8 +78,10 @@ def mf_handler(
                     continue
                 eij = R[i][j] - np.dot(P[i, :], Q[:, j])
                 for k in xrange(K):
-                    P[i][k] += alpha * (2 * eij * Q[k][j] - beta * P[i][k]) + \
-                        gamma * social_regular(R, R_dict, T, P, k, i)
+                    P[i][k] += alpha * (
+                            (2 * eij * Q[k][j] - beta * P[i][k])
+                            + gamma * social_regular(R, R_dict, T, P, k, i)
+                            )
                     Q[k][j] += alpha * (2 * eij * P[i][k] - beta * Q[k][j])
 
         loss = 0
