@@ -34,6 +34,28 @@ def build_rating_matix(rating_data):
     return matix
 
 
+def build_rating_dict(rating_data):
+    rating_dict = dict()
+    for line in rating_data:
+        if (line[0]-1) not in rating_dict:
+            rating_dict[line[0]-1] = [line[1]-1]
+        else:
+            rating_dict[line[0]-1].append(line[1]-1)
+    return rating_dict
+
+
+def build_trust_dict(trust_data):
+    trust_dict = dict()
+    for line in trust_data:
+        if line[0] > 1508 or line[1] > 1508:
+            continue
+        if (line[0]-1) not in trust_dict:
+            trust_dict[line[0]-1] = [line[1]-1]
+        else:
+            trust_dict[line[0]-1].append(line[1]-1)
+    return trust_dict
+
+
 def build_trust_matix(trust_data):
     matix = np.zeros((1508, 1508))
     for line in trust_data:

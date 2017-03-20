@@ -9,7 +9,9 @@ import random
 from CSRec.DataView.filetrust_data import build_rating_data
 from CSRec.DataView.filetrust_data import build_trust_data
 from CSRec.DataView.filetrust_data import build_rating_matix
-from CSRec.DataView.filetrust_data import build_trust_matix
+# from CSRec.DataView.filetrust_data import build_trust_matix
+from CSRec.DataView.filetrust_data import build_trust_dict
+from CSRec.DataView.filetrust_data import build_rating_dict
 
 from CSRec.SocialRec.social_mf import social_mf
 from CSRec.SocialRec.base_mf import matix_factorization
@@ -49,12 +51,13 @@ def compute_rmse(mf_res, test_data):
 
 def do_experiment(train_data, test_data):
     rating_matix = build_rating_matix(train_data)
+    rating_dict = build_rating_dict(train_data)
 
     trust_data = build_trust_data()
-    trust_matix = build_trust_matix(trust_data)
+    # trust_matix = build_trust_matix(trust_data)
+    trust_dict = build_trust_dict(trust_data)
 
-    # mf_res = social_mf(rating_matix, trust_matix, K)
-    mf_res = matix_factorization(rating_matix, K)
+    mf_res = social_mf(rating_matix, rating_dict, trust_dict, K)
     rmse = compute_rmse(mf_res, test_data)
     return rmse
 

@@ -14,7 +14,7 @@ test_data_path = '/Users/hunter/repos/g_project/datasets/ml_100k/ua.test'
 tree_num = 10
 max_context = 3
 max_depth = 2
-context_list = ['sex', 'age', '']
+context_list = ['sex', 'age', 'occupation', 'genre', 'time']
 
 
 def do_experiment(rf, test_data):
