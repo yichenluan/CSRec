@@ -46,7 +46,7 @@ def build_item_data():
         line = line[:3]
         line.append(genre)
         return line
-    
+
     item_data = map(
             format_item_data,
             item
@@ -89,7 +89,7 @@ def get_age_index(age):
 
 def get_occupation_index(occupation):
     occupation_divide = {
-            1: ['artist', 'writer', 'entertainment', 'scientist']
+            1: ['artist', 'writer', 'entertainment', 'scientist'],
             2: ['salesman', 'marketing', 'engineer', 'technician', 'programmer', 'administrator', 'executive'],
             3: ['librarian', 'doctor', 'healthcare', 'educator', 'lawyer'],
             4: ['none', 'other', 'retired', 'homemaker', 'student'],
@@ -123,10 +123,10 @@ def get_genre_index(genre):
     return 3
 
 
-def get_time_index(time):
-    time_ = time.gmtime(time)
+def get_time_index(_time):
+    time_ = time.gmtime(_time)
     time_gm = time_.tm_hour
-    if time_gm >= 7 and time_gm <12:
+    if time_gm >= 7 and time_gm < 12:
         return 1
     if time_gm >= 12 and time_gm <= 19:
         return 2
@@ -180,7 +180,7 @@ class DivideData():
                 }
         for line in self.data:
             user_id = line[0]
-            user_occupation = user_matix[user_id-1][3]
+            user_occupation = self.user_data[user_id-1][3]
             occupation_index = get_occupation_index(user_occupation)
             occupation_data[occupation_index].append(line)
         return len(self.data), occupation_data
@@ -205,8 +205,8 @@ class DivideData():
                 3: list(),
                 }
         for line in self.data:
-            time = line[-1]
-            time_index = get_time_index(time)
+            _time = line[-1]
+            time_index = get_time_index(_time)
             time_data[time_index].append(line)
         return len(self.data), time_data
 
@@ -225,11 +225,11 @@ class DivideData():
 
 class Record():
 
-    def __init__(self, user_id, item_id, rating, time):
+    def __init__(self, user_id, item_id, rating, _time):
         self.user_id = user_id
         self.item_id = item_id
         self.rating = rating
-        self.time = time
+        self._time = _time
         self.sex = None
         self.age = None
         self.occupation = None
@@ -245,13 +245,13 @@ class Record():
         user_age = self.user_data[self.user_id-1][1]
         self.age = get_age_index(user_age)
 
-        user_occupation = self.user_matix[self.user_id-1][3]
+        user_occupation = self.user_data[self.user_id-1][3]
         self.occupation = get_occupation_index(user_occupation)
 
         item_genre = self.item_data[self.item_id-1][-1]
         self.genre = get_genre_index(item_genre)
 
-        self.time = get_time_index(self.time)
+        self.time = get_time_index(self._time)
 
     def get_res(self, context):
         if context == 'sex':

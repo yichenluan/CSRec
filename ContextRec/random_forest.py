@@ -33,7 +33,7 @@ class RandomForest():
             self.trees.append(tree)
 
     def build_decision_tree(self, tree_data, tree_context):
-        decision_tree = DecisionTree(self.max_depth, tree_data, tree_context)
+        decision_tree = DecisionTree(self.max_depth, tree_context, tree_data)
         decision_tree.build()
         return decision_tree
 
@@ -43,12 +43,12 @@ class RandomForest():
         return tree_data
 
     def __get_tree_context(self):
-        tree_context_num = int(len(self.context_list) * self.max_context)
+        tree_context_num = self.max_context
         tree_context = random.sample(self.context_list, tree_context_num)
         return tree_context
 
     def run(self, record):
         res = list()
         for tree in self.trees:
-            res.append(tree.run())
+            res.append(tree.run(record))
         return res

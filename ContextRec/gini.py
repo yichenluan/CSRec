@@ -17,7 +17,7 @@ def _base_gini(data):
             5: 0,
         }
     for line in data:
-        rank = line[-1]
+        rank = line[2]
         rank_count[rank] += 1
     rank_total = float(sum(rank_count.values()))
     base_gini = 1
@@ -43,7 +43,8 @@ def compute_mini_gini(data, context_list):
     curr_choice = ''
     data_dict = dict()
     for context in context_list:
-        num, context_data_dict = DivideData(data, context).divide()
+        divide_data = DivideData(data, context)
+        num, context_data_dict = divide_data.divide()
         gini = compute_gini(num, context_data_dict.values())
         if gini < mini_gini:
             mini_gini = gini
